@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<!--
+  EDITING GUIDE
+  Keep index.html and portrait.jpg in the same folder. Open index.html in any browser to preview.
+
+  - Words: search for the text you want to change (e.g. "I turn") and edit it between the tags.
+  - Colours and fonts: the :root block at the top of <style>. --teal is water, --li is the lithium crimson.
+    The dark-theme colours are in the two blocks just below it.
+  - Profile links: the LINKS list at the top of the <script> near the end. Paste a URL between the quotes.
+  - Logos: put the files in a logos folder and list them in LOGOS near the top of the <script>.
+  - Portrait: replace portrait.jpg with another image of the same name (a 4:5 upright crop works best).
+  - Sections, in order: HERO, ABOUT, RESEARCH, PATH, PUBLICATIONS, CONFERENCES, AWARDS, CONTACT (look for the <!-- NAME --> markers).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ghaiath Almustafa</title>
+<meta name="description" content="Environmental engineer recovering lithium and other critical resources from brines with green solvents and machine learning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: a liquid–liquid extraction. The hero is two phases: who I am sits in the light
+     solvent phase, a live brine sits below it, and Li+ crosses the interface. Below that, plain,
+     well-spaced sections: about, where the work sits, the path, selected papers, contact. */
+  --bg:#F4F7F7;
+  --tint:#E9EFF0;
+  --surface:#FFFFFF;
+  --ink:#0D1A20;
+  --muted:#4E6068;
+  --line:#D5DEE1;
+  --teal:#0F7C77;
+  --teal-soft:#CFE6E2;
+  --li:#C8243B;
+  --amber:#B7791F;
+  --indigo:#4B5FC1;
+  --brine:#0E2E3D;
+  --brine-ink:#E8F2F4;
+  --brine-muted:#A6BEC5;
+  --ion-na:rgba(214,232,238,.55);
+  --ion-k:rgba(146,190,214,.75);
+  --ion-mg:rgba(96,206,190,.8);
+  --ion-b:rgba(226,177,90,.85);
+  --display:"Geologica","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#081318; --tint:#0C1B21; --surface:#0F2028; --ink:#E3EDEF; --muted:#97AAB0; --line:#1E323A;
+    --teal:#57C6BD; --teal-soft:#16393A; --li:#FF6A7E; --amber:#E2B15A; --indigo:#93A3F2; --brine:#0F3444;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#081318; --tint:#0C1B21; --surface:#0F2028; --ink:#E3EDEF; --muted:#97AAB0; --line:#1E323A;
+  --teal:#57C6BD; --teal-soft:#16393A; --li:#FF6A7E; --amber:#E2B15A; --indigo:#93A3F2; --brine:#0F3444;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--teal)}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.mono-label{font:500 .72rem/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head-in{display:flex;align-items:center;gap:18px;height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);flex:none}
+.tile{position:relative;display:grid;place-items:center;width:38px;height:38px;border:1.5px solid var(--ink);border-radius:7px;font:700 1rem/1 var(--display);padding-top:5px}
+.tile small{position:absolute;top:4px;left:5px;font:500 .5rem/1 var(--mono)}
+.brand-name{font:600 1rem var(--display);letter-spacing:-.01em}
+.nav{display:flex;gap:2px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500;font-size:.94rem;white-space:nowrap}
+.nav a:hover{color:var(--ink);background:var(--tint)}
+.theme{flex:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer}
+.theme:hover{border-color:var(--teal);color:var(--teal)}
+.theme svg{width:18px;height:18px}
+
+/* hero: solvent phase above, brine below */
+.hero{position:relative;overflow:hidden}
+.hero canvas{position:absolute;inset:0;z-index:0;display:block}
+.hero-up{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:40px;align-items:end;padding-top:64px}
+.hero-text{display:flex;flex-direction:column;padding-bottom:18px}
+.kicker{color:var(--teal);margin:0 0 18px}
+.hero h1{font-weight:800;font-size:clamp(2.7rem,6.4vw,4.9rem);line-height:.98;letter-spacing:-.04em;margin:0}
+.lead{font:500 clamp(1.35rem,2.6vw,1.95rem)/1.25 var(--display);letter-spacing:-.02em;margin:22px 0 0;max-width:21em;text-wrap:balance}
+.lead .b{color:var(--teal)}
+.lead .r{color:var(--li)}
+.sub{color:var(--muted);font-size:1.06rem;max-width:52ch;margin:14px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font:600 .95rem var(--body);text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{border-color:var(--teal);background:var(--teal);color:#fff}
+.btn svg{width:16px;height:16px}
+.where{color:var(--muted);margin-top:20px;letter-spacing:.06em}
+.phase-tag{color:var(--muted);margin-top:46px}
+.hero-text .phase-tag{align-self:flex-start;background:var(--bg);padding:2px 8px;margin-left:-8px;margin-bottom:0;border-radius:4px}
+.portrait{justify-self:end;width:min(330px,100%);aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;background:var(--tint);border:1px solid var(--line);border-bottom:0}
+.portrait img{width:100%;height:100%;object-fit:cover}
+
+.hero-brine{position:relative;z-index:1;background:var(--brine);color:var(--brine-ink)}
+.hero.live .hero-brine{background:transparent}
+.brine-in{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;padding-top:40px;padding-bottom:22px;min-height:270px}
+.brine-left{order:1;margin-top:auto;align-self:flex-end;margin-left:-14px;padding:10px 14px;border-radius:10px;background:color-mix(in srgb,var(--brine) 84%,transparent)}
+.brine-note{order:2}
+.brine-left .phase-tag{color:var(--brine-muted);margin:0}
+.legend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0;padding:0;font:500 .9rem var(--mono)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.legend .li{background:var(--li);box-shadow:0 0 8px var(--li)}
+.legend .na{background:var(--ion-na)}
+.legend .k{background:var(--ion-k)}
+.legend .mg{background:var(--ion-mg)}
+.legend .b{background:var(--ion-b)}
+.brine-note{max-width:48ch;margin:0;font-size:.96rem;line-height:1.55;color:var(--brine-ink);background:color-mix(in srgb,var(--brine) 80%,transparent);padding:14px 18px;border-radius:12px;border:1px solid rgba(232,242,244,.1)}
+.brine-note b{font-weight:600}
+.stir{display:none;color:var(--brine-muted)}
+@media (hover:hover) and (pointer:fine){.stir{display:inline}}
+
+/* sections */
+.sec{padding:96px 0;scroll-margin-top:64px}
+.sec.alt{background:var(--tint)}
+.sec h2{font-weight:700;font-size:clamp(1.85rem,3.4vw,2.5rem);line-height:1.1;letter-spacing:-.03em;margin:0}
+.sec-lede{color:var(--muted);font-size:1.1rem;max-width:58ch;margin:12px 0 0}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;margin-top:40px;align-items:start}
+.facts{margin:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.facts div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;padding:13px 18px;border-top:1px solid var(--line)}
+.facts div:first-child{border-top:0}
+.facts dt{font:500 .7rem/2 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.facts dd{margin:0;font-weight:500;line-height:1.45}
+.facts .open dd{color:var(--teal)}
+.facts div.open{grid-template-columns:1fr;gap:6px}
+.facts .open ol{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.bio p{font-size:1.14rem;line-height:1.72;margin:0 0 18px;max-width:62ch}
+.bio p:last-child{margin-bottom:0}
+
+/* research */
+.doms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:40px}
+.dom{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 24px 26px;display:flex;flex-direction:column}
+.dom-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dom h3{font-weight:700;font-size:1.18rem;line-height:1.25;letter-spacing:-.015em;margin:0;min-height:2.5em}
+.since{flex:none;color:var(--teal);background:var(--teal-soft);padding:3px 8px;border-radius:6px}
+.illo{display:block;width:100%;max-width:180px;height:auto;margin:22px auto 20px}
+.illo .s{fill:none;stroke:var(--teal);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.illo .f{fill:var(--teal-soft)}
+.dom p{margin:0 0 12px}
+.dom ul{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:.95rem;color:var(--muted)}
+.dom li{display:grid;grid-template-columns:16px 1fr;gap:4px}
+.dom li::before{content:"\2726";color:var(--teal);font-size:.7rem;line-height:2}
+
+/* logos: every one sits on the same white rounded-square plate, like app icons */
+.logo{--s:38px;position:relative;flex:none;display:grid;place-items:center;width:var(--s);height:var(--s);border-radius:calc(var(--s) * .24);background:#fff;border:1px solid rgba(13,26,32,.1);box-shadow:0 1px 2px rgba(13,26,32,.08),0 6px 14px -8px rgba(13,26,32,.35);overflow:hidden}
+.logo .mono{font:700 calc(var(--s) * .29)/1 var(--display);letter-spacing:-.02em;color:#0F7C77}
+.logo img{position:absolute;inset:14%;width:72%;height:72%;object-fit:contain;opacity:0}
+.logo.has-img img{opacity:1}
+.logo.has-img .mono{display:none}
+.logo[data-logo="uts"].has-img img{inset:0;width:100%;height:100%;object-fit:cover}
+.logo[data-logo="uos"] img{inset:5%;width:90%;height:90%}
+
+/* path: a to-scale track, 2013 to 2028. Hover over (or tap) a year: its dot stretches over
+   that period and the panel underneath shows what happened then.
+   --a = the year the dot sits on, --s/--e = start/end of the period, all as % of the track. */
+.route{--now:92.2;list-style:none;margin:20px 0 0;padding:240px 0 0;position:relative;display:grid;grid-template-columns:minmax(0,1fr)}
+.route::before,.route::after{content:"";position:absolute;top:47px}
+.route::before{left:0;right:calc(100% - var(--now) * 1%);border-top:2px solid var(--line)}
+.route::after{left:calc(var(--now) * 1%);right:0;border-top:2px dashed var(--line)}
+.tick{position:absolute;top:43px;left:calc(var(--x) * 1%);width:1px;height:10px;background:var(--line)}
+.tick-y{position:absolute;top:10px;left:calc(var(--x) * 1%);transform:translateX(-50%);font:500 .68rem/1 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.route-hint{margin:28px 0 0;font-size:.9rem;line-height:1.45;color:var(--muted)}
+.stop{display:contents}
+.pin{position:absolute;z-index:2;top:0;left:calc(var(--a) * 1% - 8px);width:calc(14.667% - 12px);height:220px;margin:0;padding:0;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start}
+.pin .yr{height:26px;font:700 1.45rem/1 var(--display);letter-spacing:-.02em;color:var(--teal)}
+.pin .logo{margin-top:36px;transition:transform .2s ease,box-shadow .2s ease}
+.pin:hover .logo,.on .pin .logo{transform:translateY(-2px);box-shadow:0 0 0 2px var(--teal),0 8px 16px -8px rgba(13,26,32,.4)}
+.pin .org{margin-top:12px;font:700 .95rem/1.3 var(--display);color:var(--ink);transition:color .2s}
+.pin .rl{margin-top:3px;font-size:.84rem;line-height:1.35;color:var(--muted)}
+.pin:hover .org,.on .pin .org{color:var(--teal)}
+.mark{position:absolute;z-index:1;top:40px;left:calc(var(--a) * 1% - 8px);width:16px;height:16px;border:3px solid var(--teal);border-radius:999px;background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:flex-start;padding:0 0 0 7px;
+  transition:left .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1),top .25s ease,height .25s ease,background-color .25s ease}
+.mark span{font:500 .66rem/1 var(--mono);letter-spacing:.06em;white-space:nowrap;color:var(--bg);opacity:0;transition:opacity .15s ease}
+.on .mark{z-index:0;top:36px;height:24px;left:calc(var(--s) * 1%);width:calc((var(--e) - var(--s)) * 1%);background:var(--teal)}
+.on .mark span{opacity:1;transition-delay:.3s}
+.now .yr{color:var(--li)}
+.now .mark{border-color:var(--li);box-shadow:0 0 0 6px color-mix(in srgb,var(--li) 20%,transparent)}
+.on.now .mark{background:var(--li);box-shadow:none}
+.next .yr{color:var(--muted)}
+.next .pin{cursor:default}
+.next .mark{border-style:dashed;border-color:var(--muted)}
+.on.next .mark{background:transparent}
+.on.next .mark span{color:var(--muted)}
+.detail{display:none;position:relative;grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr);gap:14px 40px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 28px}
+.on .detail{display:grid;animation:detail-in .35s ease both}
+@keyframes detail-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.detail::before{content:"";position:absolute;top:-8px;left:calc((var(--s) + var(--e)) / 2 * 1% - 7px);width:14px;height:14px;background:var(--surface);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.d-when{color:var(--teal);margin:0 0 8px}
+.now .d-when{color:var(--li)}
+.detail h3{font-weight:700;font-size:1.25rem;line-height:1.25;letter-spacing:-.015em;margin:0}
+.d-role{margin:4px 0 0;font-weight:600}
+.d-note{margin:10px 0 0;color:var(--muted);font-size:.95rem;line-height:1.55}
+.d-body p{margin:0;line-height:1.6}
+.d-body ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.d-body li{display:grid;grid-template-columns:16px 1fr;gap:6px;line-height:1.55}
+.d-body li::before{content:"\2726";color:var(--teal);font-size:.72rem;line-height:2.15}
+.d-body li b{font-weight:600}
+.tag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;border:1px solid var(--amber);color:var(--amber);font:500 .62rem/1.6 var(--mono);letter-spacing:.08em;vertical-align:3px}
+
+/* publications */
+.pubs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:40px}
+.pub{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.pub-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;color:var(--muted)}
+.first{color:var(--li);border:1px solid currentColor;border-radius:999px;padding:1px 8px}
+.pub h3{font-weight:600;font-size:1.1rem;line-height:1.35;letter-spacing:-.01em;margin:0;text-wrap:pretty}
+.pub .note{margin:0}
+.pub .auth{margin:0;color:var(--muted);font-size:.88rem}
+.pub .auth strong{color:var(--ink);font-weight:600}
+.pub .read{margin-top:auto;align-self:flex-start;font-weight:600;text-decoration:none;padding-top:4px}
+.pub .read:hover{text-decoration:underline}
+
+/* full publication list links */
+.pub-more{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:26px}
+.pub-more span{color:var(--muted);margin-right:4px}
+
+/* conferences */
+.confs{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--line)}
+.conf{display:grid;grid-template-columns:64px minmax(0,1.05fr) minmax(0,1fr);gap:6px 28px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.c-yr{color:var(--teal);font-size:.8rem}
+.conf h3{font-weight:600;font-size:1.02rem;line-height:1.35;margin:0}
+.c-where{margin:3px 0 0;color:var(--muted);font-size:.9rem}
+.c-what{margin:0;font-size:.93rem;line-height:1.5}
+.c-what + .c-what{margin-top:6px}
+.ctag{display:inline-block;margin-right:8px;padding:0 8px;border-radius:999px;border:1px solid currentColor;font:500 .62rem/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase;vertical-align:2px}
+.ctag.talk{color:var(--teal)}
+.ctag.poster{color:var(--amber)}
+.ctag.paper{color:var(--indigo)}
+.ctag.org{color:var(--muted)}
+.conf h3 a{color:inherit;text-decoration:none}
+.conf h3 a:hover{color:var(--teal);text-decoration:underline}
+.conf.has-video{position:relative}
+.vid-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px 5px 10px;border-radius:999px;border:1px solid var(--li);background:transparent;color:var(--li);font:600 .82rem var(--body);cursor:pointer}
+.vid-btn svg{width:14px;height:14px}
+.vid-btn:hover,.vid-host.open .vid-btn{background:var(--li);color:#fff}
+.vid-pop{display:none;position:absolute;z-index:20;top:calc(100% - 8px);right:0;width:min(480px,100%);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45)}
+.vid-host.open .vid-pop{display:block;animation:detail-in .25s ease both}
+.research-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:28px}
+.vid-inline{position:relative}
+.vid-inline .vid-btn{margin-top:0;padding:10px 18px 10px 14px;font-size:.95rem}
+.vid-sub{font-weight:500;opacity:.75;margin-left:4px}
+.vid-sub::before{content:"\00b7";margin-right:6px}
+.vid-inline .vid-pop{top:calc(100% + 10px);left:0;right:auto;width:min(520px,calc(100vw - 48px))}
+.vid-frame{position:relative;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:var(--brine)}
+.vid-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-msg{position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;color:var(--brine-ink);font-size:.95rem;line-height:1.5}
+.vid-msg a{color:#fff;font-weight:600}
+.vid-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 4px 2px;font-size:.88rem}
+.vid-bar a{font-weight:600;text-decoration:none}
+.vid-close{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;padding:4px 10px;font:500 .82rem var(--body);cursor:pointer}
+
+.confs-wrap{position:relative}
+.confs-wrap.folded{overflow:hidden;transition:max-height .5s cubic-bezier(.2,.8,.2,1)}
+.confs-wrap.folded::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 85%);pointer-events:none;transition:opacity .3s ease}
+.confs-wrap.folded.open::after{opacity:0}
+.confs-more{display:flex;justify-content:center;margin-top:8px}
+.confs-more .btn svg{transition:transform .3s ease}
+.confs-more .btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+/* awards and internships */
+.two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start}
+.aw-list{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--line)}
+.aw{display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.aw .y{color:var(--teal);font-size:.8rem;line-height:1.9}
+.aw b{display:block;font-weight:600;line-height:1.4}
+.aw .o{color:var(--muted);font-size:.92rem}
+.interns{display:grid;gap:14px;margin-top:28px}
+.intern{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.intern .logo{--s:46px}
+.intern .when{color:var(--teal);margin:0 0 6px;font-size:.72rem;line-height:1.4}
+.intern h3{font-weight:700;font-size:1.05rem;line-height:1.3;margin:0}
+.intern .role{margin:2px 0 8px;font-weight:600;font-size:.93rem}
+.intern p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.55}
+
+/* contact */
+.contact-in p{color:var(--muted);font-size:1.1rem;margin:12px 0 26px;max-width:56ch}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.addr{font:600 clamp(1.4rem,3.6vw,2.3rem)/1.2 var(--display);letter-spacing:-.02em;color:var(--ink);text-decoration:underline;text-decoration-color:var(--teal);text-decoration-thickness:2px;text-underline-offset:6px;word-break:break-all}
+.addr:hover{color:var(--teal)}
+.profiles{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.profiles:empty{display:none}
+.profiles a{padding:11px 20px;font-size:1.02rem;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:500;background:var(--surface)}
+.profiles a:hover{border-color:var(--teal);color:var(--teal)}
+.foot{border-top:1px solid var(--line);padding:24px 0 32px;color:var(--muted);font-size:.9rem}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:1000px){
+  .route{display:block;margin-top:32px;padding:0}
+  .route::before{top:6px;bottom:6px;left:7px;right:auto;border-top:0;border-left:2px solid var(--line)}
+  .route::after,.tick,.tick-y{display:none}
+  .route-hint{margin:20px 0 0}
+  .stop{display:block;position:relative;padding:0 0 24px 40px}
+  .pin{position:static;width:100%;height:auto;display:block}
+  .pin .yr,.pin .org,.pin .rl{display:block}
+  .pin .yr{height:auto;font-size:1.3rem;margin-bottom:6px}
+  .pin .org{margin-top:0}
+  .pin .logo{margin:2px 0 10px}
+  .mark,.on .mark{top:4px;left:0;width:16px}
+  .mark{transition:height .45s cubic-bezier(.2,.8,.2,1),background-color .25s ease}
+  .on .mark{height:calc(100% - 28px)}
+  .mark span{display:none}
+  .detail{margin-top:14px;grid-template-columns:1fr;gap:10px;padding:18px 20px}
+  .detail::before,.detail h3,.d-role{display:none}
+  .doms{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  .hero-up{grid-template-columns:1fr;gap:0;padding-top:36px}
+  .portrait{order:-1;justify-self:start;width:132px;border-radius:999px 999px 16px 16px;border-bottom:1px solid var(--line);margin-bottom:24px}
+  .phase-tag{margin-top:36px}
+  .brine-in{flex-direction:column;align-items:flex-start;gap:22px;padding-top:36px;padding-bottom:20px}
+  .brine-left{order:3;align-self:flex-start}
+  .about{grid-template-columns:1fr;gap:32px}
+  .pubs{grid-template-columns:1fr}
+  .conf{grid-template-columns:1fr;gap:4px}
+  .vid-pop{position:static;width:100%;margin-top:10px;box-shadow:none}
+  .two{grid-template-columns:1fr;gap:48px}
+  .sec{padding:72px 0}
+}
+@media (max-width:600px){
+  .brand-name{display:none}
+  .head-in{gap:10px}
+  .nav a{padding:8px 8px;font-size:.88rem}
+  .nav{-webkit-mask-image:linear-gradient(to right,#000 82%,transparent);mask-image:linear-gradient(to right,#000 82%,transparent);padding-right:18px}
+  .wrap{padding:0 18px}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .mark,.mark span{transition:none !important}
+  .confs-wrap.folded{transition:none}
+  .vid-host.open .vid-pop{animation:none}
+  .on .detail{animation:none}
+}
+@media print{
+  .site-head{position:static}
+  .hero canvas,.theme,.nav{display:none}
+  .hero.live .hero-brine,.hero-brine{background:#0E2E3D !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#top" aria-label="Ghaiath Almustafa, back to top" title="Ga: my initials, and the symbol for gallium, element 31">
+      <span class="tile" aria-hidden="true"><small>31</small>Ga</span>
+      <span class="brand-name">Ghaiath Almustafa</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#path">Path</a>
+      <a href="#publications">Publications</a>
+      <a href="#conferences">Conferences</a>
+      <a href="#awards">Awards</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme" id="theme" type="button" aria-label="Switch between light and dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top" aria-label="Introduction">
+    <canvas id="phase" aria-hidden="true"></canvas>
+
+    <div class="wrap hero-up">
+      <div class="hero-text">
+        <p class="kicker mono-label">PhD · University of Technology Sydney</p>
+        <h1>Ghaiath Almustafa</h1>
+        <p class="lead">Green chemistry and machine learning for <span class="b">water</span> and <span class="r">resource recovery</span>.</p>
+        <p class="sub">A water & Env. engineer working where water treatment, green chemistry and machine learning meet, to recover lithium and other critical resources from brines.</p>
+        <div class="actions">
+          <a class="btn primary" href="#contact">Get in touch</a>
+        </div>
+        <p class="where mono-label">Sydney, Australia · 33.87° S, 151.21° E</p>
+        <p class="phase-tag mono-label" aria-hidden="true">Organic phase · hydrophobic eutectic solvent</p>
+      </div>
+      <div class="portrait"><img src="portrait.jpg" alt="Portrait of Ghaiath Almustafa" width="419" height="524"></div>
+    </div>
+
+    <div class="hero-brine" id="brine">
+      <div class="wrap brine-in">
+        <div class="brine-left">
+          <p class="phase-tag mono-label">Aqueous phase · brine</p>
+          <ul class="legend" aria-label="Species shown">
+            <li><i class="li"></i>Li⁺</li>
+            <li><i class="na"></i>Na⁺</li>
+            <li><i class="k"></i>K⁺</li>
+            <li><i class="mg"></i>Mg²⁺</li>
+            <li><i class="b"></i>B(OH)₃</li>
+          </ul>
+        </div>
+        <p class="brine-note"><b>Recovery of value-added minerals and strategic resources from aqueous streams.</b> Selective hydrophobic compounds pull Li⁺, or boron, across the interface while Na⁺, K⁺ and Mg²⁺ stay in the brine. Designing that selectivity is my research. <span class="stir">Move your cursor through the brine to stir it.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec" id="about">
+    <div class="wrap">
+      <h2>About</h2>
+      <div class="about">
+        <dl class="facts">
+          <div><dt>Now</dt><dd>PhD candidate, University of Technology Sydney</dd></div>
+          <div><dt>Group</dt><dd>Resource Recovery, Prof. Ho Kyong Shon</dd></div>
+          <div><dt>Before</dt><dd>R&amp;D Engineer, DEWA R&amp;D Centre, Dubai</dd></div>
+          <div><dt>Based in</dt><dd>Sydney, Australia</dd></div>
+          <div class="open"><dt>Questions I&rsquo;m working on:</dt><dd><ol>
+            <li>Can machine learning predict which green solvents will work before we test them in the lab?</li>
+            <li>How do we take selective lithium recovery from the lab bench to a process that scales?</li>
+            <li>What cost do we pay from our waters to harvest minerals minerals and othe rstrategic resources?</li>
+          </ol></dd></div>
+        </dl>
+        <div class="bio">
+          <p>Ghaiath Almustafa is a PhD researcher at the University of Technology Sydney (UTS). He joined Prof. Ho Kyong Shon's Resource Recovery group in 2024, working at the intersection of separation chemistry, materials science and machine learning. His research develops new classes of designer solvents and adsorbent for selectively recovering lithium from natural brines and spent battery leachates. Almustafa’s research is characterized by a strong integration of experimental design and computational screening, enabling the rational selection of solvent systems for high-efficiency separations. Through this work, he aims to bridge fundamental chemistry with scalable engineering solutions, helping to redefine how materials are recovered and reused in a resource-constrained world.</p>
+          <p>Previously, Ghaiath was working as engineer at the R&D Centre of Dubai Electricity & Water Authority (DEWA), where he was in charge of testing plot-scale water treatment units for local deployment and he helped design the new laboratories for the Water research group. He contributed to multiple invention disclosures, one of which was patented in the UAE. In 2025, he received a UTS Students as Partners project grant, through which he delivered modular workshops and seminars sharing practical research skills with fellow students.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="sec alt" id="research">
+    <div class="wrap">
+      <h2>Where my work sits</h2>
+      <p class="sec-lede">My work is at the intersection of three fields: water treatment, green chemistry, and machine learning.</p>
+      <div class="doms">
+        <article class="dom">
+          <div class="dom-h"><h3>Water &amp; desalination</h3><span class="since mono-label">Since 2016</span></div>
+          <svg class="illo" viewBox="0 0 150 110" aria-hidden="true">
+            <rect class="f" x="70" y="10" width="10" height="90" rx="2"/>
+            <path class="s" d="M70 10v90M80 10v90M72 22h6M72 38h6M72 54h6M72 70h6M72 86h6"/>
+            <path class="s" d="M30 34c0-8 9-16 9-16s9 8 9 16a9 9 0 0 1-18 0z"/>
+            <circle class="s" cx="22" cy="74" r="4"/><circle class="s" cx="44" cy="84" r="3"/><circle class="s" cx="36" cy="62" r="2.5"/>
+            <path class="s" d="M12 98h40M88 98h50"/>
+            <path class="s" d="M108 34c0-8 9-16 9-16s9 8 9 16a9 9 0 0 1-18 0z"/>
+            <path class="s" d="M94 60h34m-6-6 6 6-6 6"/>
+          </svg>
+          <p>Water treatment and desalination, from policy to pilot units.</p>
+          <ul>
+            <li>Lab- and pilot-scale desalination testing</li>
+            <li>Membrane distillation and brine management</li>
+            <li>Supported liquid and functionalised membranes</li>
+            <li>Water reuse policy and runoff modelling</li>
+          </ul>
+        </article>
+        <article class="dom">
+          <div class="dom-h"><h3>Green chemistry &amp; separations</h3><span class="since mono-label">Since 2018</span></div>
+          <svg class="illo" viewBox="0 0 150 110" aria-hidden="true">
+            <path class="f" d="M38 66h36l12 30H26z"/>
+            <path class="s" d="M48 14h16M51 14v28L24 98h64L61 42V14"/>
+            <path class="s" d="M38 66h36"/>
+            <circle class="s" cx="50" cy="82" r="3"/><circle class="s" cx="64" cy="76" r="2"/>
+            <path class="s" d="M104 30l14-8 14 8v16l-14 8-14-8z"/>
+            <path class="s" d="M118 54v14M118 68l-12 8M118 68l12 8"/>
+            <circle class="s f" cx="118" cy="22" r="3"/><circle class="s f" cx="106" cy="76" r="3"/><circle class="s f" cx="130" cy="76" r="3"/>
+          </svg>
+          <p>Designing solvents and sorbents that pick one ion out of a crowded brine.</p>
+          <ul>
+            <li>Hydrophobic deep eutectic solvents and ionic liquids</li>
+            <li>Selective lithium and boron extraction</li>
+            <li>Eutectogels</li>
+            <li>Solvent extraction and coordination chemistry</li>
+          </ul>
+        </article>
+        <article class="dom">
+          <div class="dom-h"><h3>Machine learning</h3><span class="since mono-label">Since 2021</span></div>
+          <svg class="illo" viewBox="0 0 150 110" aria-hidden="true">
+            <path class="s" d="M30 28l45-10M30 28l45 32M30 28l45 74M30 60l45-42M30 60l45 0M30 60l45 42M30 92l45-74M30 92l45-32M30 92l45 10M75 18l45 24M75 60l45-18M75 60l45 36M75 102l45-6M75 18l45 78"/>
+            <circle class="s f" cx="30" cy="28" r="6"/><circle class="s f" cx="30" cy="60" r="6"/><circle class="s f" cx="30" cy="92" r="6"/>
+            <circle class="s f" cx="75" cy="18" r="6"/><circle class="s f" cx="75" cy="60" r="6"/><circle class="s f" cx="75" cy="102" r="6"/>
+            <circle class="s f" cx="120" cy="42" r="7"/><circle class="s f" cx="120" cy="96" r="7"/>
+          </svg>
+          <p>Letting data decide which chemistries are worth making.</p>
+          <ul>
+            <li>Linking material properties to extraction performance</li>
+            <li>Data-driven materials discovery</li>
+            <li>ML-guided solvent screening pipelines</li>
+            <li>Molecular-based neural networks</li>
+            
+          </ul>
+        </article>
+      </div>
+      <div class="research-cta">
+        <a class="btn" href="#publications">Selected works
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </a>
+        <div class="vid-host vid-inline">
+          <button class="vid-btn" type="button" aria-expanded="false" aria-controls="vid-rcoN2ycwLeI"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Watch our ML lithium tool <span class="vid-sub">Global WaterHackathon</span></button>
+          <div class="vid-pop" id="vid-rcoN2ycwLeI" data-video="rcoN2ycwLeI" role="dialog" aria-label="ML lithium tool, Global WaterHackathon">
+            <div class="vid-frame"></div>
+            <div class="vid-bar"><a href="https://youtu.be/rcoN2ycwLeI" rel="noopener">Open on YouTube ↗</a><button class="vid-close" type="button" aria-label="Close the video">Close</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PATH -->
+  <section class="sec" id="path">
+    <div class="wrap">
+      <h2>The path so far</h2>
+      <p class="sec-lede">From water policy in Sharjah to lithium recovery in Sydney, with pilot-scale R&amp;D at a utility in between.</p>
+      <p class="route-hint">Hover over or tap a year to open that period.</p>
+      <ol class="route" id="route">
+        <i class="tick" style="--x:0.0" aria-hidden="true"></i><i class="tick" style="--x:4.0" aria-hidden="true"></i><i class="tick" style="--x:8.0" aria-hidden="true"></i><i class="tick" style="--x:12.0" aria-hidden="true"></i><i class="tick" style="--x:19.334" aria-hidden="true"></i><i class="tick" style="--x:26.666" aria-hidden="true"></i><i class="tick" style="--x:34.0" aria-hidden="true"></i><i class="tick" style="--x:41.334" aria-hidden="true"></i><i class="tick" style="--x:48.666" aria-hidden="true"></i><i class="tick" style="--x:56.0" aria-hidden="true"></i><i class="tick" style="--x:63.334" aria-hidden="true"></i><i class="tick" style="--x:70.666" aria-hidden="true"></i><i class="tick" style="--x:78.0" aria-hidden="true"></i><i class="tick" style="--x:85.334" aria-hidden="true"></i><i class="tick" style="--x:92.666" aria-hidden="true"></i><i class="tick" style="--x:100.0" aria-hidden="true"></i>
+        <span class="tick-y" style="--x:0.0" aria-hidden="true">2013</span><span class="tick-y" style="--x:4.0" aria-hidden="true">2014</span><span class="tick-y" style="--x:8.0" aria-hidden="true">2015</span><span class="tick-y" style="--x:19.334" aria-hidden="true">2017</span><span class="tick-y" style="--x:34.0" aria-hidden="true">2019</span><span class="tick-y" style="--x:48.666" aria-hidden="true">2021</span><span class="tick-y" style="--x:63.334" aria-hidden="true">2023</span><span class="tick-y" style="--x:78.0" aria-hidden="true">2025</span><span class="tick-y" style="--x:92.666" aria-hidden="true">2027</span>
+        <li class="stop" style="--a:12.0;--s:0.0;--e:25.444">
+          <button class="pin" type="button" aria-expanded="false" aria-controls="d-uos">
+            <span class="yr">2016</span>
+            <span class="logo" data-logo="uos" aria-hidden="true"><span class="mono">UoS</span></span>
+            <span class="org">University of Sharjah</span>
+            <span class="rl">BSc · Research assistant</span>
+          </button>
+          <span class="mark" aria-hidden="true"><span>2013 – 2017</span></span>
+          <div class="detail" id="d-uos">
+            <div class="d-head">
+              <p class="d-when mono-label">2013 – 2017 · Sharjah, UAE</p>
+              <h3>University of Sharjah</h3>
+              <p class="d-role">BSc student, then research assistant</p>
+              
+            </div>
+            <div class="d-body"><ul><li><span><b>BSc in Civil and Environmental Engineering</b>, GPA 3.8/4.0.</span></li><li><span><b>President</b> of the ASCE Student Chapter.</span></li><li><span><b>Research assistant</b> from 2016: greywater reuse policy and reuse systems with the Sharjah Electricity &amp; Water Authority (SEWA).</span></li><li><span><b>First start-up, WaterPalm:</b> a modular, solar-powered atmospheric water generation device. Competed in the MIT Enterprise Forum (MIT-EF) Pan Arab competition 2017, was shortlisted regionally out of 9,000 applicants, and reached the semi-finals in Bahrain.</span></li><li><span><b>Judge</b> on the panel of the Environmental Impact Assessment competition &ldquo;The Great Debate&rdquo;, University of Sharjah.</span></li></ul></div>
+          </div>
+        </li>
+        <li class="stop" style="--a:26.666;--s:26.666;--e:41.334">
+          <button class="pin" type="button" aria-expanded="false" aria-controls="d-masdar">
+            <span class="yr">2018</span>
+            <span class="logo" data-logo="masdar" aria-hidden="true"><span class="mono">MI</span></span>
+            <span class="org">Masdar Institute</span>
+            <span class="rl">MSc · Research assistant</span>
+          </button>
+          <span class="mark" aria-hidden="true"><span>2018 – 2020</span></span>
+          <div class="detail" id="d-masdar">
+            <div class="d-head">
+              <p class="d-when mono-label">2018 – 2020 · Abu Dhabi, UAE</p>
+              <h3>Masdar Institute, Khalifa University</h3>
+              <p class="d-role">MSc, research &amp; teaching assistant</p>
+              
+            </div>
+            <div class="d-body"><ul><li><span><b>MSc in Water &amp; Environmental Engineering</b>, GPA 3.96/4.0. Thesis on green solvents for boron removal in water and wastewater treatment, supervised by Prof. Inas Al-Nashef and Prof. Hassan Arafat.</span></li><li><span><b>Young Future Energy Leaders (YFEL)</b>: graduate of Masdar&rsquo;s programme.</span></li><li><span><b>Graduate teaching assistant</b>, grading, auditing and proctoring courses.</span></li><li><span><b>Event organiser</b>, Postgraduate Students Council, Khalifa University (Masdar campus).</span></li></ul></div>
+          </div>
+        </li>
+        <li class="stop" style="--a:41.334;--s:41.334;--e:60.278">
+          <button class="pin" type="button" aria-expanded="false" aria-controls="d-cmat">
+            <span class="yr">2020</span>
+            <span class="logo" data-logo="cmat" aria-hidden="true"><span class="mono">KU</span></span>
+            <span class="org">CMAT, Khalifa University</span>
+            <span class="rl">Research engineer</span>
+          </button>
+          <span class="mark" aria-hidden="true"><span>2020 – 2022</span></span>
+          <div class="detail" id="d-cmat">
+            <div class="d-head">
+              <p class="d-when mono-label">2020 – 2022 · Abu Dhabi, UAE</p>
+              <h3>Center for Membranes &amp; Advanced Water Technology (CMAT), Khalifa University</h3>
+              <p class="d-role">Research engineer</p>
+              
+            </div>
+            <div class="d-body"><ul><li><span><b>Multidisciplinary research</b> with Prof. Inas Al-Nashef and Prof. Hassan Arafat on eutectic solvents for boron and contaminant extraction.</span></li><li><span><b>Set up CMAT&rsquo;s new laboratories</b> during the 2020 pandemic, and designed and built new experimental rigs.</span></li><li><span><b>Funding proposals:</b> helped write proposals to external funders, including the Abu Dhabi Department of Education and Knowledge (ADEK).</span></li><li><span><b>Lab operations:</b> ran instrument training for lab users, kept the instruments maintained and managed the lab day to day.</span></li></ul></div>
+          </div>
+        </li>
+        <li class="stop" style="--a:56.0;--s:59.666;--e:72.5">
+          <button class="pin" type="button" aria-expanded="false" aria-controls="d-dewa">
+            <span class="yr">2022</span>
+            <span class="logo" data-logo="dewa" aria-hidden="true"><span class="mono">DEWA</span></span>
+            <span class="org">DEWA R&amp;D Centre</span>
+            <span class="rl">R&amp;D engineer · Industry</span>
+          </button>
+          <span class="mark" aria-hidden="true"><span>2022 – 2024</span></span>
+          <div class="detail" id="d-dewa">
+            <div class="d-head">
+              <p class="d-when mono-label">2022 – 2024 · Dubai, UAE</p>
+              <h3>DEWA R&amp;D Centre <span class="tag">INDUSTRY</span></h3>
+              <p class="d-role">R&amp;D engineer</p>
+              
+            </div>
+            <div class="d-body"><ul><li><span><b>Pilot testing:</b> tested a range of lab- and pilot-scale water treatment units for local deployment.</span></li><li><span><b>Designed new laboratories</b> for the Water department.</span></li><li><span><b>Drafted invention disclosures</b>, research proposals and technical reports.</span></li><li><span><b>Granted UAE patent:</b> &ldquo;Design for Continuous Operation of Multimedia Filter with Zonal Segmentation&rdquo;.</span></li><li><span><b>Workshops</b> on advanced skills for researchers.</span></li></ul></div>
+          </div>
+        </li>
+        <li class="stop now on" style="--a:70.666;--s:71.888;--e:92.666" data-default>
+          <button class="pin" type="button" aria-expanded="true" aria-controls="d-uts">
+            <span class="yr">2024</span>
+            <span class="logo" data-logo="uts" aria-hidden="true"><span class="mono">UTS</span></span>
+            <span class="org">University of Technology Sydney</span>
+            <span class="rl">PhD candidate</span>
+          </button>
+          <span class="mark" aria-hidden="true"><span>2024 – 2027</span></span>
+          <div class="detail" id="d-uts">
+            <div class="d-head">
+              <p class="d-when mono-label">2024 – 2027 · Sydney, Australia</p>
+              <h3>University of Technology Sydney</h3>
+              <p class="d-role">PhD candidate, Resource Recovery group</p>
+            </div>
+            <div class="d-body"><ul><li><span><b>Topic:</b> selective lithium recovery from natural brines and spent-battery leachates, using designer solvents (hydrophobic deep eutectic solvents) and eutectogel sorbents.</span></li><li><span><b>Supervisor:</b> Prof. Ho Kyong Shon.</span></li><li><span><b>Grant:</b> UTS Students as Partners (2025), &ldquo;How to present and represent&rdquo;, with staff partner Dr. Sarah K. Miller: modular workshops and seminars on practical research skills for fellow students.</span></li><li><span><b>Tools developed:</b> machine-learning models that link material properties from the literature to lithium extraction performance, part of the group&rsquo;s discovery engine for screening solvent compositions.</span></li></ul></div>
+          </div>
+        </li>
+        <li class="stop next" style="--a:85.334;--s:85.334;--e:100.0" aria-hidden="true">
+          <span class="pin"><span class="yr">Next</span></span>
+          <span class="mark"></span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section class="sec alt" id="publications">
+    <div class="wrap">
+      <h2>Selected publications</h2>
+      <p class="sec-lede">Four of twelve journal articles, picked to cover water, solvents and machine learning.</p>
+      <div class="pubs">
+        <article class="pub">
+          <div class="pub-top mono-label"><span>Progress in Materials Science · 2025</span><span class="first">First author</span></div>
+          <h3>Roadmap for integrating deep eutectic solvents into adsorption processes: a critical review &amp; design blueprint</h3>
+          <p class="note">How eutectic solvents can be built into adsorption processes, reviewed and turned into a design blueprint.</p>
+          <p class="auth"><strong>G. Almustafa</strong>, R. Abu Alwan, H.K. Shon, J. Rodríguez, I. AlNashef</p>
+          <a class="read" href="https://doi.org/10.1016/j.pmatsci.2025.101501" rel="noopener">Read the paper ↗</a>
+        </article>
+        <article class="pub">
+          <div class="pub-top mono-label"><span>Chemical Engineering Journal · 2024</span></div>
+          <h3>Synergistic ternary deep eutectic solvents: an archetype for sustainable and eco-conscious Li and Co recovery from spent batteries</h3>
+          <p class="note">A glycine, ascorbic acid and water solvent that recovers lithium and cobalt from spent batteries.</p>
+          <p class="auth">H.K. Amusa, T. Lemaoui, <strong>G. Almustafa</strong>, A. Darwish, F. Banat, H.A. Arafat, I.M. AlNashef</p>
+          <a class="read" href="https://doi.org/10.1016/j.cej.2024.156114" rel="noopener">Read the paper ↗</a>
+        </article>
+        <article class="pub">
+          <div class="pub-top mono-label"><span>Chemical Engineering Journal · 2023</span></div>
+          <h3>Molecular-based artificial neural networks for selecting deep eutectic solvents for the removal of contaminants from aqueous media</h3>
+          <p class="note">Neural networks that choose eutectic solvents for pulling contaminants out of water.</p>
+          <p class="auth">N. Awaja, <strong>G. Almustafa</strong>, A.S. Darwish, Y. Benguerba, F. Banat, H.A. Arafat, I. AlNashef</p>
+          <a class="read" href="https://doi.org/10.1016/j.cej.2023.146429" rel="noopener">Read the paper ↗</a>
+        </article>
+        <article class="pub">
+          <div class="pub-top mono-label"><span>Chemical Engineering Journal · 2021</span><span class="first">First author</span></div>
+          <h3>Liquification of 2,2,4-trimethyl-1,3-pentanediol into hydrophobic eutectic mixtures: a multi-criteria design for eco-efficient boron recovery</h3>
+          <p class="note">Turning a water-soluble diol into a hydrophobic solvent that is also the boron extractant.</p>
+          <p class="auth"><strong>G. Almustafa</strong>, A.S. Darwish, T. Lemaoui, M.J. O’Conner, S. Amin, H.A. Arafat, I. AlNashef</p>
+          <a class="read" href="https://doi.org/10.1016/j.cej.2021.131342" rel="noopener">Read the paper ↗</a>
+        </article>
+      </div>
+      <div class="pub-more">
+        <span>Full list of publications:</span>
+        <a class="btn" href="https://scholar.google.com/citations?user=B4AWJJMAAAAJ&amp;hl=en" rel="noopener">Google Scholar ↗</a>
+        <a class="btn" href="https://orcid.org/0000-0002-1863-1589" rel="noopener">ORCID ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFERENCES -->
+  <section class="sec" id="conferences">
+    <div class="wrap">
+      <h2>Conferences</h2>
+      <p class="sec-lede">Talks, posters and papers at international conferences, newest first.</p>
+      <div class="confs-wrap" id="confs-wrap">
+      <ol class="confs">
+        <li class="conf">
+          <span class="c-yr mono-label">2026</span>
+          <div><h3><a href="https://www.nicecece.org/" rel="noopener">CECE 2026, Circular Economy for Climate and Environment ↗</a></h3><p class="c-where">UTS, Sydney, Australia · 23–25 Sep 2026</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>What six decades of chemistry tells us about lithium extraction!</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2024</span>
+          <div><h3><a href="https://www.nicecece.org/cece2024" rel="noopener">CECE 2024, Circular Economy for Climate and Environment ↗</a></h3><p class="c-where">UTS, Sydney, Australia · 29 Sep – 2 Oct 2024</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Molecular-based machine learning for selecting eco-efficient deep eutectic solvents for boron extraction</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2024</span>
+          <div><h3>IDEAS 2024, International Conference on Desalination, Environment and Sustainability</h3><p class="c-where">NYU Abu Dhabi, UAE · 22–23 Jan 2024</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Concentration of RO desalination brine using air-gap membrane distillation: a pilot study</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2022</span>
+          <div><h3>CESE-2022, 15th Challenges in Environmental Science &amp; Engineering</h3><p class="c-where">Dubai, UAE · 27 Nov – 1 Dec 2022</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Selection of eco-efficient deep eutectic solvents for boron extraction by integrating artificial neural networks with multicriteria design</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2022</span>
+          <div><h3>Desalination for the Environment: Clean Water and Energy (EDS)</h3><p class="c-where">Las Palmas de Gran Canaria, Spain · 20–23 Jun 2022</p></div>
+          <div><p class="c-what"><span class="ctag paper">Abstract</span>A new process for boron removal in desalination plants using deep eutectic solvents</p></div>
+        </li>
+        <li class="conf has-video vid-host">
+          <span class="c-yr mono-label">2021</span>
+          <div><h3>AIChE Annual Meeting</h3><p class="c-where">Online, recorded talk during COVID-19 · Nov 2021</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Design and application of hydrophobic 2,2,4-trimethyl-1,3-pentanediol deep eutectic solvents for boron extraction</p><p class="c-what"><span class="ctag paper">Paper</span>Novel hydrophobic DESs for boron recovery</p><button class="vid-btn" type="button" aria-expanded="false" aria-controls="vid-EoKyV8WG0TY"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Watch the talk</button></div>
+          <div class="vid-pop" id="vid-EoKyV8WG0TY" data-video="EoKyV8WG0TY" role="dialog" aria-label="Recorded talk, AIChE Annual Meeting 2021">
+            <div class="vid-frame"></div>
+            <div class="vid-bar"><a href="https://youtu.be/EoKyV8WG0TY" rel="noopener">Open on YouTube ↗</a><button class="vid-close" type="button" aria-label="Close the video">Close</button></div>
+          </div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2021</span>
+          <div><h3>MEMDES 2021, Desalination Using Membrane Technology (Elsevier)</h3><p class="c-where">Nov 2021</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Design and application of hydrophobic deep eutectic solvents for boron extraction from saline brine</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2020</span>
+          <div><h3>AIChE Annual Meeting</h3><p class="c-where">Online · 16–20 Nov 2020</p></div>
+          <div><p class="c-what"><span class="ctag poster">Poster</span>Design and application of hydrophobic 2,2,4-trimethyl-1,3-pentanediol deep eutectic solvents for boron extraction</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2019</span>
+          <div><h3>MEMDES 2019, 4th International Conference on Desalination Using Membrane Technology (Elsevier)</h3><p class="c-where">Perth, Australia · 1–4 Dec 2019</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Utilization of green solvents for boron removal in desalination pretreatment</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2018</span>
+          <div><h3><a href="https://conferences.aehms.org/gulf3/" rel="noopener">GULF3, Managing the Health of the Gulf Ecosystem ↗</a></h3><p class="c-where">UAE University, Al Ain · 5–7 Nov 2018</p></div>
+          <div><p class="c-what"><span class="ctag poster">Poster</span>Assessing GPM multi-satellite precipitation products over arid and semi-arid regions: the case of the United Arab Emirates</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2018</span>
+          <div><h3>Graduate Research Conference</h3><p class="c-where">UAE University, Al Ain · 2018</p></div>
+          <div><p class="c-what"><span class="ctag talk">Talk</span>Solubility of boron species in hydrophobic ionic liquids</p></div>
+        </li>
+        <li class="conf">
+          <span class="c-yr mono-label">2017</span>
+          <div><h3>ASCMCES-17 and 8th International Forum on Engineering Education (IFEE)</h3><p class="c-where">University of Sharjah, UAE · 18–20 Apr 2017</p></div>
+          <div><p class="c-what"><span class="ctag org">Organiser</span>Organising committee</p></div>
+        </li>
+      </ol>
+      </div>
+      <div class="confs-more">
+        <button class="btn" id="confs-toggle" type="button" aria-expanded="false" aria-controls="confs-wrap" hidden>
+          <span class="lbl">Show all conferences</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- AWARDS -->
+  <section class="sec alt" id="awards">
+    <div class="wrap two">
+      <div>
+        <h2>Awards &amp; honours</h2>
+        <ol class="aw-list">
+          <li class="aw"><span class="y mono-label">2025</span><div><b>Students as Partners grant: &ldquo;How to present and represent&rdquo;</b><span class="o">University of Technology Sydney, with staff partner Dr. Sarah K. Miller</span></div></li>
+          <li class="aw"><span class="y mono-label">2019</span><div><b>Young Future Energy Leaders (YFEL), graduate</b><span class="o">Masdar, Abu Dhabi</span></div></li>
+          <li class="aw"><span class="y mono-label">2017</span><div><b>Regional shortlist and semi-finalist, MIT Enterprise Forum Pan Arab competition</b><span class="o">With the WaterPalm start-up, out of 9,000+ applicants</span></div></li>
+          <li class="aw"><span class="y mono-label">2017</span><div><b>Sharjah Sustainability Award, 1st place</b><span class="o">Sharjah, UAE</span></div></li>
+          <li class="aw"><span class="y mono-label">2017</span><div><b>Exemplary Students Award</b><span class="o">Sharjah Electricity &amp; Water Authority (SEWA)</span></div></li>
+          <li class="aw"><span class="y mono-label">2016</span><div><b>Innovation Award, 1st place</b><span class="o">University of Sharjah</span></div></li>
+        </ol>
+      </div>
+      <div id="internships">
+        <h2>Internships</h2>
+        <div class="interns">
+          <article class="intern">
+            <span class="logo" data-logo="novisad" aria-hidden="true"><span class="mono">UNS</span></span>
+            <div>
+            <p class="when mono-label">Summer 2018 · Novi Sad, Serbia</p>
+            <h3>University of Novi Sad</h3>
+            <p class="role">IAESTE intern</p>
+            <p>Analysed environmental samples from the Danube River and the local water treatment facility, including pesticide detection.</p>
+            </div>
+          </article>
+          <article class="intern">
+            <span class="logo" data-logo="trojan" aria-hidden="true"><span class="mono">TH</span></span>
+            <div>
+            <p class="when mono-label">2017 · Abu Dhabi, UAE</p>
+            <h3>Trojan Holding</h3>
+            <p class="role">Construction intern</p>
+            <p>Site internship on the Hydra Towers project, Reem Island.</p>
+            </div>
+          </article>
+          <article class="intern">
+            <span class="logo" data-logo="kgm" aria-hidden="true"><span class="mono">KGM</span></span>
+            <div>
+            <p class="when mono-label">Summer 2016 · Türkiye</p>
+            <h3>General Directorate of Highways (KGM)</h3>
+            <p class="role">IAESTE intern</p>
+            <p>Audited the design and construction of the Osman Gazi suspension bridge on the Istanbul–Izmir motorway, and visited maintenance stations and road-operations control rooms.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec contact" id="contact">
+    <div class="wrap contact-in">
+      <h2>Get in touch</h2>
+      <p>For collaborations, questions about the work, or roles in research and engineering, find me on these pages.</p>
+      <div class="profiles" id="profiles"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span>© 2026 Ghaiath Almustafa · Sydney, Australia</span><span>Updated November 2026</span></div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Add your profile links here; each one shows up under the email once filled in. */
+  var LINKS = [
+    ['UTS profile', 'https://profiles.uts.edu.au/student_Ghaiath.Almustafa'],
+    ['LinkedIn', 'https://www.linkedin.com/in/almustafa-ghaiath'],
+    ['GitHub', 'https://github.com/GIA-ALMS'],
+    ['Google Scholar', 'https://scholar.google.com/citations?user=B4AWJJMAAAAJ&hl=en']
+  ];
+
+  /* Logos: put the image files in a folder called logos next to this page, then write each file's
+     path here (for example 'logos/uts.png'). Empty = the tile shows initials instead. */
+  var LOGOS = {
+    uos: 'logos/uos.png',         /* University of Sharjah */
+    masdar: 'logos/masdar.png',   /* Masdar Institute */
+    cmat: 'logos/ku.png',         /* Khalifa University / CMAT */
+    dewa: 'logos/dewa.png',       /* DEWA R&D Centre */
+    uts: 'logos/uts.png',         /* University of Technology Sydney (fills its tile) */
+    novisad: 'logos/iaeste.png',  /* IAESTE, for the Novi Sad internship */
+    trojan: 'logos/trojan.png',   /* Trojan Holding */
+    kgm: 'logos/kgm.png'          /* General Directorate of Highways (KGM) */
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('.logo[data-logo]'), function (tile) {
+    var src = LOGOS[tile.getAttribute('data-logo')]; if (!src) { return; }
+    var img = new Image(); img.alt = '';
+    img.onload = function () { tile.classList.add('has-img'); };
+    img.src = src; tile.appendChild(img);
+  });
+
+  function $(id) { return document.getElementById(id); }
+
+  /* profiles */
+  $('profiles').innerHTML = LINKS.filter(function (l) { return l[1]; }).map(function (l) {
+    return '<a href="' + l[1].replace(/"/g, '&quot;') + '" rel="noopener">' + l[0] + ' ↗</a>';
+  }).join('');
+
+
+  /* theme */
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem('theme'); if (saved) { root.setAttribute('data-theme', saved); } } catch (e) {}
+  $('theme').addEventListener('click', function () {
+    var t = root.getAttribute('data-theme');
+    var dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    phase.recolor();
+  });
+
+  /* ---------- the path: hover or tap a year to open that period ---------- */
+  (function () {
+    var route = $('route'); if (!route) { return; }
+    var stops = Array.prototype.slice.call(route.querySelectorAll('.stop:not(.next)'));
+    var narrow = matchMedia('(max-width: 1000px)');
+    function open(li) {
+      stops.forEach(function (s) {
+        var on = s === li;
+        s.classList.toggle('on', on);
+        s.querySelector('.pin').setAttribute('aria-expanded', on ? 'true' : 'false');
+      });
+    }
+    /* Hovering previews a period; moving away puts things back the way they were.
+       Moving from the year down into its panel keeps it open so it can be read.
+       Clicking a year keeps it open as the new resting state. */
+    var rest = route.querySelector('[data-default]'), timer = 0;
+    function hold() { clearTimeout(timer); }
+    function settle() { clearTimeout(timer); timer = setTimeout(function () { open(rest); }, 160); }
+    function mouse(e) { return e.pointerType === 'mouse' && !narrow.matches; }
+    stops.forEach(function (li) {
+      var pin = li.querySelector('.pin'), detail = li.querySelector('.detail');
+      pin.addEventListener('pointerenter', function (e) { if (mouse(e)) { hold(); open(li); } });
+      pin.addEventListener('pointerleave', function (e) { if (mouse(e)) { settle(); } });
+      detail.addEventListener('pointerenter', function (e) { if (mouse(e) && li.classList.contains('on')) { hold(); } });
+      detail.addEventListener('pointerleave', function (e) { if (mouse(e)) { settle(); } });
+      pin.addEventListener('focus', function () { if (!narrow.matches) { hold(); open(li); } });
+      pin.addEventListener('blur', function (e) { if (!narrow.matches && !route.contains(e.relatedTarget)) { settle(); } });
+      pin.addEventListener('click', function () {
+        if (narrow.matches) { open(li.classList.contains('on') ? null : li); return; }
+        rest = li; hold(); open(li);
+      });
+    });
+    /* keep "now" current: the solid line runs to today, dashed after */
+    var d = new Date(), y = d.getFullYear() + (d.getMonth() + 1) / 12;
+    var pct = Math.max(0, Math.min(100, y <= 2016 ? (y - 2013) / 3 * 12 : 12 + (y - 2016) / 12 * 88)).toFixed(2);
+    route.style.setProperty('--now', pct);
+    function openDefault() { if (!route.querySelector('.stop.on')) { open(route.querySelector('[data-default]')); } }
+    if (narrow.addEventListener) { narrow.addEventListener('change', openDefault); }
+    openDefault();
+  })();
+
+  /* ---------- conferences: first three, a fade, then "show all" ---------- */
+  (function () {
+    var wrap = $('confs-wrap'), btn = $('confs-toggle'); if (!wrap || !btn) { return; }
+    var items = Array.prototype.slice.call(wrap.querySelectorAll('.conf'));
+    if (items.length <= 3) { return; }
+    var lbl = btn.querySelector('.lbl'), open = false;
+    lbl.textContent = 'Show all ' + items.length + ' conferences';
+    wrap.classList.add('folded'); btn.hidden = false;
+    function foldedHeight() { var fourth = items[3]; return fourth.offsetTop + fourth.offsetHeight * 0.6; }
+    function setInert(on) { items.slice(3).forEach(function (li) { if (on) { li.setAttribute('inert', ''); } else { li.removeAttribute('inert'); } }); }
+    function fold() { wrap.style.maxHeight = foldedHeight() + 'px'; setInert(true); }
+    fold();
+    btn.addEventListener('click', function () {
+      open = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      lbl.textContent = open ? 'Show fewer' : 'Show all ' + items.length + ' conferences';
+      if (open) {
+        setInert(false); wrap.classList.add('open');
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        setTimeout(function () { if (open) { wrap.style.maxHeight = 'none'; wrap.style.overflow = 'visible'; } }, 520);
+      } else {
+        wrap.style.overflow = ''; wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        void wrap.offsetHeight;                      /* let the browser register the start height */
+        wrap.classList.remove('open'); fold();
+        var top = $('conferences').getBoundingClientRect().top;
+        if (top < 0) { $('conferences').scrollIntoView({ block: 'start' }); }
+      }
+    });
+    window.addEventListener('resize', function () { if (!open) { fold(); } });
+  })();
+
+  /* ---------- videos: hover a "Watch" button (or its entry) to show the player ---------- */
+  (function () {
+    var hoverable = matchMedia('(hover: hover) and (pointer: fine)'), players = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.vid-host'), function (host) {
+      var pop = host.querySelector('.vid-pop'), frame = host.querySelector('.vid-frame'), btn = host.querySelector('.vid-btn');
+      var p = { host: host, frame: frame, btn: btn, id: pop.getAttribute('data-video'), title: pop.getAttribute('aria-label') || 'Video', iframe: null, pinned: false, timer: 0 };
+      p.show = function () {
+        clearTimeout(p.timer);
+        players.forEach(function (o) { if (o !== p && o.host.classList.contains('open')) { o.hide(); } });
+        if (!p.iframe && !frame.querySelector('.vid-msg')) {
+          p.iframe = document.createElement('iframe');
+          p.iframe.title = p.title;
+          p.iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          p.iframe.allowFullscreen = true;
+          p.iframe.src = 'https://www.youtube-nocookie.com/embed/' + p.id + '?rel=0';
+          frame.appendChild(p.iframe);
+        }
+        host.classList.add('open'); btn.setAttribute('aria-expanded', 'true');
+      };
+      p.hide = function () {
+        p.pinned = false; host.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
+        if (p.iframe) { p.iframe.remove(); p.iframe = null; }   /* stops playback */
+      };
+      host.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && hoverable.matches) { p.show(); } });
+      host.addEventListener('pointerleave', function (e) {
+        if (e.pointerType === 'mouse' && hoverable.matches && !p.pinned) { clearTimeout(p.timer); p.timer = setTimeout(p.hide, 250); }
+      });
+      btn.addEventListener('click', function () { if (host.classList.contains('open') && p.pinned) { p.hide(); } else { p.pinned = true; p.show(); } });
+      host.querySelector('.vid-close').addEventListener('click', p.hide);
+      players.push(p);
+    });
+    if (!players.length) { return; }
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') { return; }
+      players.forEach(function (p) { if (p.host.classList.contains('open')) { p.hide(); p.btn.focus(); } });
+    });
+    /* once the visitor clicks into a player, keep it open until they close it */
+    window.addEventListener('blur', function () {
+      setTimeout(function () { players.forEach(function (p) { if (p.iframe && document.activeElement === p.iframe) { p.pinned = true; } }); }, 0);
+    });
+    /* where embedded players are not allowed, offer the YouTube link instead */
+    document.addEventListener('securitypolicyviolation', function (e) {
+      if (String(e.blockedURI).indexOf('youtube') === -1) { return; }
+      players.forEach(function (p) {
+        if (!p.iframe) { return; }
+        p.iframe.remove(); p.iframe = null;
+        if (!p.frame.querySelector('.vid-msg')) {
+          p.frame.insertAdjacentHTML('beforeend', '<p class="vid-msg"><span>The player can&rsquo;t load in this preview.<br><a href="https://youtu.be/' + p.id + '" rel="noopener">Watch it on YouTube ↗</a></span></p>');
+        }
+      });
+    });
+  })();
+
+  /* ---------- the hero: a live liquid–liquid extraction ---------- */
+  var phase = (function () {
+    var hero = $('top'), cv = $('phase'), brine = $('brine');
+    var ctx = cv.getContext && cv.getContext('2d');
+    var noop = { recolor: function () {} };
+    if (!ctx) { return noop; }
+    hero.classList.add('live');
+
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var W = 0, H = 0, base = 0, T = 0, last = 0, raf = 0, running = false, onScreen = true, ptr = null;
+    var ions = [], COL = {};
+    var TYPES = { li: { r: 3.4, w: 0.16 }, na: { r: 2.4, w: 0.40 }, k: { r: 2.9, w: 0.14 }, mg: { r: 3.6, w: 0.22 }, b: { r: 2.7, w: 0.08 } };
+    var TAU = Math.PI * 2;
+
+    function css(n) { return getComputedStyle(root).getPropertyValue(n).trim(); }
+    function recolor() {
+      COL = { brine: css('--brine'), li: css('--li'), teal: css('--teal'), na: css('--ion-na'), k: css('--ion-k'), mg: css('--ion-mg'), b: css('--ion-b'), lig: css('--muted') };
+      draw();
+    }
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function pick() {
+      var x = Math.random(), acc = 0;
+      for (var k in TYPES) { acc += TYPES[k].w; if (x < acc) { return k; } }
+      return 'na';
+    }
+    /* interface height: always a little above the brine panel's top edge */
+    function surf(x) { return base - 9 - 3.5 * Math.sin(x / 95 + T * 0.8) - 2.5 * Math.sin(x / 41 - T * 1.25); }
+    function spawn(type, anywhere) {
+      var top = base + 16, bot = H - 8;
+      return { t: type, x: rnd(0, W), y: anywhere ? rnd(top, bot) : rnd(bot - 50, bot), vx: rnd(-0.3, 0.3), vy: rnd(-0.3, 0.3), org: false, life: 0, ph: rnd(0, TAU) };
+    }
+    function seedExtracted() {
+      /* a few Li+ already across, so the still frame tells the story */
+      var lis = ions.filter(function (p) { return p.t === 'li'; });
+      for (var i = 0; i < Math.min(4, lis.length); i++) {
+        var p = lis[i];
+        p.org = true; p.life = 60 + i * 70; p.x = W * (0.18 + 0.2 * i) + rnd(-30, 30); p.y = base - 22 - i * 9; p.vy = -0.16;
+      }
+      /* and one boron, which the solvent takes up less readily */
+      var bs = ions.filter(function (p) { return p.t === 'b'; });
+      if (bs.length) { var b = bs[0]; b.org = true; b.life = 130; b.x = W * 0.9 + rnd(-20, 20); b.y = base - 26; b.vy = -0.16; }
+    }
+    function size() {
+      W = Math.round(hero.clientWidth); H = Math.round(hero.clientHeight);
+      base = brine.offsetTop;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      cv.style.width = W + 'px'; cv.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.max(28, Math.min(90, Math.round(W / 1200 * 74)));
+      if (ions.length !== n) {
+        ions = [];
+        for (var i = 0; i < n; i++) { ions.push(spawn(pick(), true)); }
+        seedExtracted();
+      } else {
+        ions.forEach(function (p) {
+          if (p.x > W) { p.x = rnd(0, W); }
+          if (!p.org && (p.y < base || p.y > H)) { p.y = rnd(base + 16, H - 8); }
+        });
+      }
+    }
+    function step(dt) {
+      T += dt * 0.016;
+      for (var i = 0; i < ions.length; i++) {
+        var p = ions[i];
+        if (p.org) {
+          p.life += dt; p.y += p.vy * dt; p.vy *= 0.995;
+          p.x += Math.sin(p.life * 0.02 + p.ph) * 0.12 * dt;
+          if (p.life > 420 || p.y < base - 120) { var q = spawn(p.t, false); for (var k in q) { p[k] = q[k]; } }
+          continue;
+        }
+        p.vx += (Math.random() - 0.5) * 0.05 * dt;
+        p.vy += (Math.random() - 0.5) * 0.05 * dt;
+        if (p.t === 'li') { p.vy -= 0.0035 * dt; } else if (p.t === 'b') { p.vy -= 0.002 * dt; }
+        if (ptr) {
+          var dx = p.x - ptr.x, dy = p.y - ptr.y, d2 = dx * dx + dy * dy;
+          if (d2 < 4900 && d2 > 1) { var d = Math.sqrt(d2), f = (1 - d / 70) * 0.35; p.vx += dx / d * f; p.vy += dy / d * f; }
+        }
+        p.vx *= 0.985; p.vy *= 0.985;
+        var sp = Math.sqrt(p.vx * p.vx + p.vy * p.vy), mx = ptr ? 1.6 : 0.55;
+        if (sp > mx) { p.vx *= mx / sp; p.vy *= mx / sp; }
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -6) { p.x = W + 6; } else if (p.x > W + 6) { p.x = -6; }
+        if (p.y > H - 6) { p.y = H - 6; p.vy = -Math.abs(p.vy); }
+        var s = surf(p.x) + 5;
+        if (p.y < s) {
+          if ((p.t === 'li' && Math.random() < 0.5) || (p.t === 'b' && Math.random() < 0.2)) { p.org = true; p.life = 0; p.vy = -0.28; p.y = s - 6; }
+          else { p.y = s; p.vy = Math.abs(p.vy) * 0.8; }
+        }
+      }
+    }
+    function wavePath() {
+      ctx.beginPath(); ctx.moveTo(0, surf(0));
+      for (var x = 12; x <= W + 12; x += 12) { ctx.lineTo(x, surf(x)); }
+    }
+    function draw() {
+      if (!W) { return; }
+      ctx.clearRect(0, 0, W, H);
+      wavePath(); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+      ctx.fillStyle = COL.brine; ctx.fill();
+      wavePath(); ctx.strokeStyle = COL.teal; ctx.lineWidth = 2; ctx.stroke();
+      for (var i = 0; i < ions.length; i++) {
+        var p = ions[i];
+        if (p.org) {
+          var a = Math.min(1, p.life / 40) * Math.max(0, 1 - Math.max(0, p.life - 300) / 120);
+          ctx.globalAlpha = a; ctx.fillStyle = COL.lig;
+          for (var k = 0; k < 5; k++) {
+            var an = p.life * 0.015 + k * TAU / 5;
+            ctx.beginPath(); ctx.arc(p.x + Math.cos(an) * 8, p.y + Math.sin(an) * 8, 1.6, 0, TAU); ctx.fill();
+          }
+          ctx.fillStyle = COL[p.t]; ctx.beginPath(); ctx.arc(p.x, p.y, TYPES[p.t].r, 0, TAU); ctx.fill();
+          ctx.globalAlpha = 1;
+          continue;
+        }
+        ctx.globalAlpha = Math.max(0, Math.min(1, (H - p.y) / 50));
+        if (p.t === 'li') { ctx.shadowColor = COL.li; ctx.shadowBlur = 10; ctx.fillStyle = COL.li; }
+        else { ctx.shadowBlur = 0; ctx.fillStyle = COL[p.t]; }
+        ctx.beginPath(); ctx.arc(p.x, p.y, TYPES[p.t].r, 0, TAU); ctx.fill();
+      }
+      ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    }
+    function frame(now) {
+      if (!running) { return; }
+      var dt = last ? Math.min(3, (now - last) / 16.67) : 1;
+      last = now; step(dt); draw();
+      raf = requestAnimationFrame(frame);
+    }
+    function start() { if (running || reduce.matches || !onScreen || document.hidden) { return; } running = true; last = 0; raf = requestAnimationFrame(frame); }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect(); ptr = { x: e.clientX - r.left, y: e.clientY - r.top };
+    });
+    hero.addEventListener('pointerleave', function () { ptr = null; });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; if (onScreen) { start(); } else { stop(); } }).observe(hero);
+    }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) { stop(); } else { start(); } });
+    if (reduce.addEventListener) { reduce.addEventListener('change', function () { if (reduce.matches) { stop(); draw(); } else { start(); } }); }
+    var scheme = matchMedia('(prefers-color-scheme: dark)');
+    if (scheme.addEventListener) { scheme.addEventListener('change', recolor); }
+    if ('ResizeObserver' in window) { new ResizeObserver(function () { size(); draw(); }).observe(hero); }
+    else { window.addEventListener('resize', function () { size(); draw(); }); }
+
+    size(); recolor(); start();
+    return { recolor: recolor };
+  })();
+})();
+</script>
+</body>
+</html>
